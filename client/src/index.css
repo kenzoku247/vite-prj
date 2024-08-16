@@ -1,0 +1,6 @@
+@import '@/style/partials/customAntd.css';
+@import '@/style/partials/rest.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
