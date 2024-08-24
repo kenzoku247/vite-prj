@@ -1,56 +1,26 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
-const mongoose = require('mongoose');
+
+const UserModel = require('@/models/User')
+const PasswordModel = require('@/models/Password')
+const { createAccessToken, createRefreshToken } = require('@/handlers/generateToken');
 
 const shortid = require('shortid');
 
 const resetPassword = async (req, res, { userModel }) => {
-  const Password = mongoose.model('Password');
-  const User = mongoose.model(userModel);
   const { password, userId, resetToken } = req.body;
 
-  const databasePassword = await Password.findOne({ user: userId, removed: false });
-  const user = await User.findOne({ _id: userId, removed: false }).exec();
+  const user = await UserModel.findOne({ _id: userId, removed: false }).exec();
+  const databasePassword = await PasswordModel.findOne({ user: userId, removed: false });
 
-  if (!user.enabled && user.role === 'owner') {
-    const settings = useAppSettings();
-    const admin_email = settings['admin_email'];
-    const base_url = settings['base_url'];
-
-    const url = checkAndCorrectURL(base_url);
-
-    const link = url + '/verify/' + user._id + '/' + databasePassword.emailToken;
-
-    await sendMail({
-      email,
-      name: user.name,
-      link,
-      admin_email,
-      emailToken: databasePassword.emailToken,
-    });
-
-    return res.status(403).json({
-      success: false,
-      result: null,
-      message:
-        'your email account is not verified , check your email inbox to activate your account',
-    });
-  }
-
-  if (!user.enabled)
+  if (!user.enabled) {
     return res.status(409).json({
       success: false,
       result: null,
       message: 'Your account is disabled, contact your account administrator',
     });
-
-  if (!databasePassword || !user)
-    return res.status(404).json({
-      success: false,
-      result: null,
-      message: 'No account with this email has been registered.',
-    });
+  }
 
   const isMatch = resetToken === databasePassword.resetToken;
   if (!isMatch || databasePassword.resetToken === undefined || databasePassword.resetToken === null)
@@ -78,25 +48,19 @@ const resetPassword = async (req, res, { userModel }) => {
     });
   }
 
+  const pwInstance = new PasswordModel()
   const salt = shortid.generate();
-  const hashedPassword = bcrypt.hashSync(salt + password);
-  const emailToken = shortid.generate();
+  const hashedPassword = pwInstance.generateHash(salt, password);
 
-  const token = jwt.sign(
-    {
-      id: userId,
-    },
-    process.env.JWT_SECRET,
-    { expiresIn: '24h' }
-  );
+  const access_token = createAccessToken(null, { id: user._id })
+  const refresh_token = createRefreshToken({ id: user._id })
 
-  await Password.findOneAndUpdate(
+  await PasswordModel.findOneAndUpdate(
     { user: userId },
     {
-      $push: { loggedSessions: token },
+      $push: { loggedSessions: refresh_token },
       password: hashedPassword,
       salt: salt,
-      emailToken: emailToken,
       resetToken: shortid.generate(),
       emailVerified: true,
     },
@@ -105,34 +69,27 @@ const resetPassword = async (req, res, { userModel }) => {
     }
   ).exec();
 
-  if (
-    resetToken === databasePassword.resetToken &&
-    databasePassword.resetToken !== undefined &&
-    databasePassword.resetToken !== null
-  )
-    return res
-      .status(200)
-      .cookie('token', token, {
-        maxAge: 24 * 60 * 60 * 1000,
-        sameSite: 'Lax',
-        httpOnly: true,
-        secure: false,
-        domain: req.hostname,
-        path: '/',
-        Partitioned: true,
-      })
-      .json({
-        success: true,
-        result: {
-          _id: user._id,
-          name: user.name,
-          surname: user.surname,
-          role: user.role,
-          email: user.email,
-          photo: user.photo,
+  return res
+    .status(200)
+    .cookie('refreshToken', refresh_token, {
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: 'Lax',
+      httpOnly: true,
+      secure: false,
+      domain: req.hostname,
+      path: '/',
+      Partitioned: true,
+    })
+    .json({
+      success: true,
+      result: {
+        access_token,
+        user: {
+          ...user._doc
         },
-        message: 'Successfully resetPassword user',
-      });
+      },
+      message: 'Successfully reset password user',
+    });
 };
 
 module.exports = resetPassword;

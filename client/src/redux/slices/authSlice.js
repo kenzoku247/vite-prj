@@ -53,9 +53,9 @@ export const register = createAsyncThunk(
 
 export const verify = createAsyncThunk(
   'auth/verify',
-  async ({ userId, emailToken }, { dispatch, rejectWithValue }) => {
+  async ({ activation_token }, { dispatch, rejectWithValue }) => {
     try {
-      const data = await authService.verify({ userId, emailToken });
+      const data = await authService.verify({ activation_token });
       if (data.success) {
         const authState = {
           current: data.result,

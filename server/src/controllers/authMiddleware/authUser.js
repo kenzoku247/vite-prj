@@ -1,7 +1,10 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const { createAccessToken, createRefreshToken } = require('@/handlers/generateToken');
+const PasswordModel = require('@/models/Password')
 
-const authUser = async (req, res, { user, databasePassword, password, PasswordModel }) => {
+const authUser = async (req, res, { user, password }) => {
+  const databasePassword = await PasswordModel.findOne({ user: user._id, removed: false });
+  const { remember } = req.body
   const isMatch = await bcrypt.compare(databasePassword.salt + password, databasePassword.password);
 
   if (!isMatch)
@@ -12,17 +15,12 @@ const authUser = async (req, res, { user, databasePassword, password, PasswordMo
     });
 
   if (isMatch === true) {
-    const token = jwt.sign(
-      {
-        id: user._id,
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: req.body.remember ? 365 * 24 + 'h' : '24h' }
-    );
+    const access_token = createAccessToken(remember, { id: user._id })
+    const refresh_token = createRefreshToken({ id: user._id })
 
     await PasswordModel.findOneAndUpdate(
       { user: user._id },
-      { $push: { loggedSessions: token } },
+      { $push: { loggedSessions: refresh_token } },
       {
         new: true,
       }
@@ -30,8 +28,8 @@ const authUser = async (req, res, { user, databasePassword, password, PasswordMo
 
     res
       .status(200)
-      .cookie('token', token, {
-        maxAge: req.body.remember ? 365 * 24 * 60 * 60 * 1000 : null,
+      .cookie('refreshToken', refresh_token, {
+        maxAge: req.body.remember ? 7 * 24 * 60 * 60 * 1000 : null,
         sameSite: 'Lax',
         httpOnly: true,
         secure: false,
@@ -42,12 +40,10 @@ const authUser = async (req, res, { user, databasePassword, password, PasswordMo
       .json({
         success: true,
         result: {
-          _id: user._id,
-          name: user.name,
-          surname: user.surname,
-          role: user.role,
-          email: user.email,
-          photo: user.photo,
+          access_token,
+          user: {
+            ...user._doc
+          }
         },
         message: 'Successfully login user',
       });

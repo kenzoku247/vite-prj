@@ -1,6 +1,8 @@
 const isValidAuthToken = require('./isValidAuthToken');
 const login = require('./login');
 const register = require('./register');
+const activateUser = require('./activateUser');
+const refreshToken = require('./refreshToken');
 const logout = require('./logout');
 const forgetPassword = require('./forgetPassword');
 const resetPassword = require('./resetPassword');
@@ -20,6 +22,16 @@ const authMiddleware = (userModel) => {
   
   authMethods.register = (req, res) =>
     register(req, res, {
+      userModel,
+    });
+  
+  authMethods.activateUser = (req, res) =>
+    activateUser(req, res, {
+      userModel,
+    });
+  
+  authMethods.refreshToken = (req, res) =>
+    refreshToken(req, res, {
       userModel,
     });
 

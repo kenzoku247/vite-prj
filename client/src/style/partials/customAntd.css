@@ -53,6 +53,10 @@
   pointer-events: none;
 }
 
+.register-form {
+  margin: 0px 0px 0px;
+}
+
 .login-form button[type='submit'] {
   margin-bottom: 20px;
 }

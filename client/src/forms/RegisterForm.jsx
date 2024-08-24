@@ -1,21 +1,52 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { Form, Input, Select } from 'antd';
+import { Form, Input, Select, Col, Row } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 
-import useLanguage from '@/locale/useLanguage';
+import useLanguage from '@/hooks/useLanguage';
 import { countryList } from '@/utils/countryList';
 
 export default function RegisterForm({ userLocation }) {
   const translate = useLanguage();
 
   return (
-    <>
+    <div className='register_form'>
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item
+            name="firstName"
+            label={translate('first_name')}
+            rules={[
+              {
+                required: true,
+                message: 'Please enter your first name!'
+              }
+            ]}
+          >
+            <Input prefix={<UserOutlined className="site-form-item-icon" />} size="large" />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
+            name="lastName"
+            label={translate('last_name')}
+            rules={[
+              {
+                required: true,
+                message: 'Please enter your last name!'
+              }
+            ]}
+          >
+            <Input prefix={<UserOutlined className="site-form-item-icon" />} size="large" />
+          </Form.Item>
+        </Col>
+      </Row>
       <Form.Item
         name="name"
-        label={translate('name')}
+        label={translate('username')}
         rules={[
           {
             required: true,
+            message: 'Please enter your username!'
           },
         ]}
       >
@@ -30,6 +61,7 @@ export default function RegisterForm({ userLocation }) {
           },
           {
             type: 'email',
+            message: 'Please enter your email!'
           },
         ]}
       >
@@ -50,7 +82,7 @@ export default function RegisterForm({ userLocation }) {
       >
         <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} size="large" />
       </Form.Item>
-      {/* <Form.Item
+      <Form.Item
         name="confirm_password"
         label={translate('confirm_password')}
         rules={[
@@ -69,13 +101,14 @@ export default function RegisterForm({ userLocation }) {
         hasFeedback
       >
         <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} size="large" />
-      </Form.Item> */}
+      </Form.Item>
       <Form.Item
         label={translate('country')}
         name="country"
         rules={[
           {
             required: true,
+            message: 'Please select your country!'
           },
         ]}
         initialValue={userLocation}
@@ -107,6 +140,6 @@ export default function RegisterForm({ userLocation }) {
           ))}
         </Select>
       </Form.Item>
-    </>
+    </div>
   );
 }

@@ -10,7 +10,9 @@ const lang = {
     register: 'Register',
     or: 'Or',
     already_have_account_login: 'Already Have Account Login',
+    
     name: 'Name',
+    username: 'Username',
     email: 'Email',
     password: 'Password',
     country: 'Country',

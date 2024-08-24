@@ -1,28 +1,17 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const Joi = require('joi');
-
-const mongoose = require('mongoose');
-
-const checkAndCorrectURL = require('./checkAndCorrectURL');
-const sendMail = require('./sendMail');
-
 const authUser = require('./authUser');
+const UserModel = require('@/models/User')
 
 const login = async (req, res, { userModel }) => {
-  const PasswordModel = mongoose.model('Password');
-  const UserModel = mongoose.model(userModel);
-  const { email, password } = req.body;
+  const { username, password } = req.body;
 
   // validate
   const objectSchema = Joi.object({
-    email: Joi.string()
-      .email({ tlds: { allow: true } })
-      .required(),
+    username: Joi.string().required(),
     password: Joi.string().required(),
   });
 
-  const { error, value } = objectSchema.validate({ email, password });
+  const { error, value } = objectSchema.validate({ username, password });
   if (error) {
     return res.status(409).json({
       success: false,
@@ -33,17 +22,15 @@ const login = async (req, res, { userModel }) => {
     });
   }
 
-  const user = await UserModel.findOne({ email: email, removed: false });
+  const user = await UserModel.findOne({ username: username, removed: false });
 
   // console.log(user);
   if (!user)
     return res.status(404).json({
       success: false,
       result: null,
-      message: 'No account with this email has been registered.',
+      message: 'No account with this username has been registered.',
     });
-
-  const databasePassword = await PasswordModel.findOne({ user: user._id, removed: false });
 
   if (!user.enabled)
     return res.status(409).json({
@@ -53,7 +40,7 @@ const login = async (req, res, { userModel }) => {
     });
 
   //  authUser if your has correct password
-  authUser(req, res, { user, databasePassword, password, PasswordModel });
+  authUser(req, res, { user, password });
 };
 
 module.exports = login;

@@ -1,3 +1,4 @@
+const { required } = require('joi');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -14,30 +15,51 @@ const userSchema = new Schema({
     type: String,
     lowercase: true,
     trim: true,
+    unique: true,
     required: true,
   },
-  name: { type: String, required: true },
-  surname: { type: String },
+  firstName: {
+    type: String,
+    required: true,
+    trim: true,
+    maxlength: 10
+  },
+  lastName: {
+    type: String,
+    required: true,
+    trim: true,
+    maxlength: 10
+  },
+  fullName: {
+    type: String,
+    default: ''
+  },
+  username: {
+    type: String,
+    required: true,
+    trim: true,
+    maxlength: 25,
+    unique: true
+  },
   photo: {
     type: String,
     trim: true,
   },
-  gender: { 
-    type: String, 
-    required: true, 
+  gender: {
+    type: String,
+    required: true,
   },
-  mobile: { 
-    type: String, 
-    default: '' 
+  mobile: {
+    type: String,
+    default: ''
   },
-  address: { 
-    type: String, 
-    default: '' 
+  address: {
+    type: String,
+    default: ''
   },
   createdAt: {
     type: Date,
-    default: Date.now,
-    expires: '1d'
+    default: Date.now
   },
   role: {
     type: String,

@@ -8,7 +8,7 @@ import RegisterForm from '@/forms/RegisterForm';
 import Loading from '@/components/Loading';
 import AuthModule from '@/modules/AuthModule';
 
-const LoginPage = () => {
+const RegisterPage = () => {
     const translation = useLanguage()
     const { isLoading, isSuccess } = useSelector((state) => state.auth);
     const navigate = useNavigate();
@@ -24,23 +24,23 @@ const LoginPage = () => {
             <Loading isLoading={isLoading}>
                 <Form
                     layout="vertical"
-                    name="normal_login"
-                    className="login-form"
+                    name="normal_register"
+                    className="register-form"
                     initialValues={{
                         remember: true,
                     }}
                     onFinish={onFinish}
                 >
-                    <LoginForm />
+                    <RegisterForm />
                     <Form.Item>
                         <Button
                             type="primary"
                             htmlType="submit"
-                            className="login-form-button"
+                            className="register-form-button"
                             loading={isLoading}
                             size="large"
                         >
-                            {translation('Log in')}
+                            {translation('Register')}
                         </Button>
                     </Form.Item>
                 </Form>
@@ -48,7 +48,7 @@ const LoginPage = () => {
         )
     }
 
-    return <AuthModule authContent={<FormContainer />} AUTH_TITLE="Sign in" />;
+    return <AuthModule authContent={<FormContainer />} AUTH_TITLE="Register" />;
 };
 
-export default LoginPage;
+export default RegisterPage;

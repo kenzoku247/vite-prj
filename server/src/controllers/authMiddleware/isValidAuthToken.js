@@ -1,13 +1,11 @@
 const jwt = require('jsonwebtoken');
 
-const mongoose = require('mongoose');
-
-const isValidAuthToken = async (req, res, next, { userModel, jwtSecret = 'JWT_SECRET' }) => {
+const UserModel = require('@/models/User')
+const PasswordModel = require('@/models/Password');
+const isValidAuthToken = async (req, res, next, { userModel, jwtSecret = 'REFRESH_TOKEN_SECRET' }) => {
   try {
-    const Password = mongoose.model('Password');
-    const User = mongoose.model(userModel);
-    const token = req.cookies.token;
-    if (!token)
+    const refresh_token = req.cookies.refreshToken;
+    if (!refresh_token)
       return res.status(401).json({
         success: false,
         result: null,
@@ -15,7 +13,7 @@ const isValidAuthToken = async (req, res, next, { userModel, jwtSecret = 'JWT_SE
         jwtExpired: true,
       });
 
-    const verified = jwt.verify(token, process.env[jwtSecret]);
+    const verified = jwt.verify(refresh_token, process.env[jwtSecret]);
 
     if (!verified)
       return res.status(401).json({
@@ -25,10 +23,10 @@ const isValidAuthToken = async (req, res, next, { userModel, jwtSecret = 'JWT_SE
         jwtExpired: true,
       });
 
-    const passwordPromise = Password.findOne({ user: verified.id, removed: false });
-    const userPromise = User.findOne({ _id: verified.id, removed: false });
+    const passwordPromise = PasswordModel.findOne({ user: verified.id, removed: false });
+    const userPromise = UserModel.findOne({ _id: verified.id, removed: false });
 
-    const [user, userPassword] = await Promise.all([userPromise, passwordPromise]);
+    const [user, password] = await Promise.all([userPromise, passwordPromise]);
 
     if (!user)
       return res.status(401).json({
@@ -38,8 +36,8 @@ const isValidAuthToken = async (req, res, next, { userModel, jwtSecret = 'JWT_SE
         jwtExpired: true,
       });
 
-    const { loggedSessions } = userPassword;
-    if (!loggedSessions.includes(token))
+    const { loggedSessions } = password;
+    if (!loggedSessions.includes(refresh_token))
       return res.status(401).json({
         success: false,
         result: null,

@@ -17,7 +17,6 @@ const PasswordSchema = new Schema({
     type: String,
     required: true,
   },
-  emailToken: String,
   resetToken: String,
   emailVerified: {
     type: Boolean,
@@ -33,8 +32,7 @@ const PasswordSchema = new Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now,
-    expires: '1d'
+    default: Date.now
   }
 });
 
@@ -42,11 +40,6 @@ const PasswordSchema = new Schema({
 // generating a hash
 PasswordSchema.methods.generateHash = function (salt, password) {
   return bcrypt.hashSync(salt + password);
-};
-
-// checking if password is valid
-PasswordSchema.methods.validPassword = function (salt, userpassword) {
-  return bcrypt.compareSync(salt + userpassword, this.password);
 };
 
 module.exports = mongoose.model('Password', PasswordSchema);
