@@ -48,7 +48,7 @@ const LoginPage = () => {
         )
     }
 
-    return <AuthModule authContent={<FormContainer />} AUTH_TITLE="Sign in" />;
+    return <AuthModule authContent={<FormContainer />} AUTH_TITLE="Sign in"/>;
 };
 
 export default LoginPage;

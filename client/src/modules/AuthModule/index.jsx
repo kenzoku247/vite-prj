@@ -7,13 +7,13 @@ import AuthLayout from '@/layout/AuthLayout';
 const { Content } = Layout;
 const { Title } = Typography;
 
-const AuthModule = ({ authContent, AUTH_TITLE, isForRegister = false }) => {
+const AuthModule = ({ authContent, AUTH_TITLE, isForRegister }) => {
     const translation = useLanguage();
     return (
         <AuthLayout sideContent={<SideContent />}>
             <Content
                 style={{
-                    padding: isForRegister ? '40px 30px 30px' : '100px 30px 30px',
+                    padding: isForRegister ? '10px 0px 30px' : '100px 30px 30px',
                     maxWidth: '440px',
                     margin: '0 auto',
                 }}

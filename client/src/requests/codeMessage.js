@@ -10,7 +10,7 @@ const codeMessage = {
   406: 'The requested format is not available. ',
   410: 'The requested resource has been permanently deleted and will no longer be available. ',
   422: 'When creating an object, a validation error occurred. ',
-  500: 'An error occurred in the server, please check the server. ',
+  500: 'An error occurred in the server. ',
   502: 'Gateway error. ',
   503: 'The service is unavailable, the server is temporarily overloaded or maintained. ',
   504: 'The gateway has timed out. ',

@@ -51,11 +51,11 @@ export const register = createAsyncThunk(
   }
 );
 
-export const verify = createAsyncThunk(
-  'auth/verify',
+export const activateUser = createAsyncThunk(
+  'auth/activateUser',
   async ({ activation_token }, { dispatch, rejectWithValue }) => {
     try {
-      const data = await authService.verify({ activation_token });
+      const data = await authService.activateUser({ activation_token });
       if (data.success) {
         const authState = {
           current: data.result,
@@ -189,17 +189,17 @@ const authSlice = createSlice({
       .addCase(register.rejected, (state) => {
         state.isLoading = false;
       })
-      .addCase(verify.pending, (state) => {
+      .addCase(activateUser.pending, (state) => {
         state.isLoading = true;
         state.isLoggedIn = false;
       })
-      .addCase(verify.fulfilled, (state, action) => {
+      .addCase(activateUser.fulfilled, (state, action) => {
         state.current = action.payload;
         state.isLoggedIn = true;
         state.isLoading = false;
         state.isSuccess = true;
       })
-      .addCase(verify.rejected, (state) => {
+      .addCase(activateUser.rejected, (state) => {
         state.isLoading = false;
         state.isLoggedIn = false;
       })

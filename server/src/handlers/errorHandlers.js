@@ -11,10 +11,15 @@ exports.catchErrors = (fn) => {
         });
       } else {
         // Server Error
+        console.log(error.message);
+        let new_message
+        if (error.message.includes('jwt expired') )
+          new_message = 'Link expired!'
+        // else if ()
         return res.status(500).json({
           success: false,
           result: null,
-          message: error.message,
+          message: new_message ? new_message : 'An error occurred in the server',
           controller: fn.name,
           error: error,
         });

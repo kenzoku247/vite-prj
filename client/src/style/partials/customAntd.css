@@ -57,9 +57,19 @@
   margin: 0px 0px 0px;
 }
 
+.register-form-button {
+  width: 50%;
+  float: right
+}
+
+.login-navigate {
+  width: 50%;
+}
+
 .login-form button[type='submit'] {
   margin-bottom: 20px;
 }
+
 .login-form-forgot {
   float: right;
 }

@@ -11,23 +11,23 @@ const LoginForm = () => {
     return (
         <div style={{ direction: langDirection }}>
             <Form.Item
-                label={translation('email')}
-                name="email"
+                label={translation('username')}
+                name="username"
                 rules={[
                     {
                         required: true,
 
                     },
                     {
-                        type: 'email',
+                        type: 'username',
                     },
                 ]}
 
             >
                 <Input
                     prefix={<UserOutlined className="site-form-item-icon" />}
-                    placeholder={translation('email')}
-                    type="email"
+                    placeholder={translation('username')}
+                    type="username"
                     size="large"
                 />
             </Form.Item>
@@ -51,10 +51,15 @@ const LoginForm = () => {
                 <Form.Item name="remember" valuePropName="checked" noStyle>
                     <Checkbox>{translation('Remember me')}</Checkbox>
                 </Form.Item>
-                <a className="float-right" href="/forgetpassword" style={{ marginLeft: langDirection === "rtl" ? "220px" : "0px" }}>
+                <a className="login-form-forgot" href="/forgetpassword" style={{ marginLeft: langDirection === "rtl" ? "220px" : "0px" }}>
                     {translation('Forgot password')}
                 </a>
 
+            </Form.Item>
+            <Form.Item>
+                <a className="float-right" href="/register" style={{ marginLeft: langDirection === "rtl" ? "220px" : "0px" }}>
+                    {translation('Create a new account')}
+                </a>
             </Form.Item>
         </div>
     )

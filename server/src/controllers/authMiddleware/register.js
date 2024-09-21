@@ -78,9 +78,9 @@ const register = async (req, res, { userModel }) => {
         firstName, lastName, fullName: newFullName, username: checkedUsername, email, password: hashedPassword, gender, salt
     }
     const activationToken = createActivationToken(newUser)
-    const link = url + '/verify/' + activationToken;
-    const sendEmail = async () => {
-        const response = await sendMail({
+    const link = url + '/activateUser/' + activationToken;
+    try {
+        sendMail({
             email: email,
             name: newFullName,
             link: link,
@@ -88,14 +88,22 @@ const register = async (req, res, { userModel }) => {
             admin_email: admin_email,
             type: 'emailVerification',
         });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            result: null,
+            message: 'Cannot send email. Something went wrong!',
+        });
     }
-    // sendEmail();
     return res.status(200).json({
         success: true,
-        result: null,
-        message: activationToken,
-        // message: 'Check your email inbox to verify your account.',
+        result: 
+            activationToken
+        ,
+        message: 'Check your email inbox to activate your account.',
     });
+    
+    
 };
 
 module.exports = register;

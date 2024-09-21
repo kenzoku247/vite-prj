@@ -45,10 +45,9 @@ export const register = async ({ registerData }) => {
   }
 };
 
-export const verify = async ({ token }) => {
+export const activateUser = async ({ activation_token }) => {
   try {
-    const response = await axios.get(API_BASE_URL + `verify/${token}`);
-
+    const response = await axios.post(API_BASE_URL + "activateUser", activation_token);
     const { status, data } = response;
 
     successHandler(

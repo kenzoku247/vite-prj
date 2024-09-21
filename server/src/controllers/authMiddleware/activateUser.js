@@ -5,17 +5,26 @@ const PasswordModel = require('@/models/Password');
 const { createAccessToken, createRefreshToken } = require('@/handlers/generateToken');
 
 const activateUser = async (req, res, { userModel }) => {
-    const { activation_token } = req.body
+    const activation_token = Object.keys(req.body)[0]
     const user = jwt.verify(activation_token, process.env.ACTIVATION_TOKEN_SECRET)
+    // console.log(user);
     const {
         firstName, lastName, fullName, username, email, password, gender, salt
     } = user
-    const checkEmail = await UserModel.findOne({ email: email })
-    if (checkEmail) {
+    const checkUser = await UserModel.findOne({ email: email })
+    if (checkUser) {
+        checkPassword = await PasswordModel.findOne({ user: checkUser._id })
+        if (checkPassword.emailVerified){
+            return res.status(403).json({
+                success: false,
+                result: null,
+                message: "Your account has created successfully. Please login!"
+            })
+        }
         return res.status(403).json({
             success: false,
             result: null,
-            message: "This email already exists."
+            message: "This email has already created. Please login!"
         })
     }
     const newUser = new UserModel({

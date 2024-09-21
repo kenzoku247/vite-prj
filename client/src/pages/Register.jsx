@@ -11,14 +11,13 @@ import AuthModule from '@/modules/AuthModule';
 const RegisterPage = () => {
     const translation = useLanguage()
     const { isLoading, isSuccess } = useSelector((state) => state.auth);
+    const langDirection = useSelector((state) => state.translation.langDirection)
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const onFinish = (values) => {
         dispatch(register({ registerData: values }));
+        navigate('/')
     };
-    useEffect(() => {
-        if (isSuccess) navigate('/');
-    }, [isSuccess]);
     const FormContainer = () => {
         return (
             <Loading isLoading={isLoading}>
@@ -33,6 +32,9 @@ const RegisterPage = () => {
                 >
                     <RegisterForm />
                     <Form.Item>
+                        <a className="login-navigate" href="/login" style={{ marginLeft: langDirection === "rtl" ? "220px" : "0px" }}>
+                            {translation('Or already have an account, Login now')}
+                        </a>
                         <Button
                             type="primary"
                             htmlType="submit"
@@ -48,7 +50,7 @@ const RegisterPage = () => {
         )
     }
 
-    return <AuthModule authContent={<FormContainer />} AUTH_TITLE="Register" />;
+    return <AuthModule authContent={<FormContainer />} AUTH_TITLE="Register" isForRegister="true" />;
 };
 
 export default RegisterPage;

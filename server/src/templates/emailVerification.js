@@ -1,3 +1,7 @@
+const { useAppSettings } = require('@/settings');
+const settings = useAppSettings();
+const base_url = settings['base_url'];
+
 exports.emailVerification = ({
   title = 'Verify Your Account',
   name = '',
@@ -183,7 +187,7 @@ exports.emailVerification = ({
               <tr>
                 <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
                 <p>Thanks for signing up for Play Together! We're excited to have you as an early user.</p>
-                  <p style="margin: 0;">Tap the button below to confirm your email address. If you didn't create an account with <a href="${domain}">Play Together</a>, you can safely delete this email.</p>
+                  <p style="margin: 0;">Tap the button below to confirm your email address. If you didn't create an account with <a href="${base_url}">Play Together</a>, you can safely delete this email.</p>
                 </td>
               </tr>
               <!-- end copy -->

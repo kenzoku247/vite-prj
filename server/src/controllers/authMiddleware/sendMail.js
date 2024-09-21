@@ -11,7 +11,6 @@ const sendMail = async ({
   type = 'emailVerification',
 }) => {
   try {
-    console.log(email);
     const resend = new Resend(process.env.RESEND_API);
   
     const data = await resend.emails.send({
@@ -23,7 +22,6 @@ const sendMail = async ({
           ? emailVerification({ name, link })
           : passwordVerification({ name, link }),
     });
-    console.log(data);
     return data;
   } catch (error) {
     console.error('Error sending email:', error)

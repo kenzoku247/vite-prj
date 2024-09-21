@@ -4,10 +4,11 @@ import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 
 import useLanguage from '@/hooks/useLanguage';
 import { countryList } from '@/utils/countryList';
+import { useSelector } from "react-redux";
 
 export default function RegisterForm({ userLocation }) {
   const translate = useLanguage();
-
+  
   return (
     <div className='register_form'>
       <Row gutter={16}>
@@ -41,7 +42,7 @@ export default function RegisterForm({ userLocation }) {
         </Col>
       </Row>
       <Form.Item
-        name="name"
+        name="username"
         label={translate('username')}
         rules={[
           {
@@ -102,44 +103,90 @@ export default function RegisterForm({ userLocation }) {
       >
         <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} size="large" />
       </Form.Item>
-      <Form.Item
-        label={translate('country')}
-        name="country"
-        rules={[
-          {
-            required: true,
-            message: 'Please select your country!'
-          },
-        ]}
-        initialValue={userLocation}
-      >
-        <Select
-          showSearch
-          defaultOpen={false}
-          optionFilterProp="children"
-          filterOption={(input, option) =>
-            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-          }
-          filterSort={(optionA, optionB) =>
-            (optionA?.label ?? '').toLowerCase().startsWith((optionB?.label ?? '').toLowerCase())
-          }
-          style={{
-            width: '100%',
-          }}
-          size="large"
-        >
-          {countryList.map((language) => (
-            <Select.Option
-              key={language.value}
-              value={language.value}
-              label={translate(language.label)}
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item
+            label={translate('gender')}
+            name="gender"
+            rules={[
+              {
+                required: true,
+                message: 'Please select your gender!'
+              },
+            ]}
+            initialValue='Male'
+          >
+            <Select
+              showSearch
+              defaultOpen={false}
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+              }
+              filterSort={(optionA, optionB) =>
+                (optionA?.label ?? '').toLowerCase().startsWith((optionB?.label ?? '').toLowerCase())
+              }
+              style={{
+                width: '100%',
+              }}
+              size="large"
             >
-              {language?.icon && language?.icon + ' '}
-              {translate(language.label)}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
+              {['Male', 'Female'].map((gender) => (
+                <Select.Option
+                  key={gender}
+                  value={gender}
+                  label={translate(gender)}
+                >
+                  {translate(gender)}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+
+          <Form.Item
+            label={translate('country')}
+            name="country"
+            rules={[
+              {
+                required: true,
+                message: 'Please select your country!'
+              },
+            ]}
+            initialValue={userLocation}
+          >
+            <Select
+              showSearch
+              defaultOpen={false}
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+              }
+              filterSort={(optionA, optionB) =>
+                (optionA?.label ?? '').toLowerCase().startsWith((optionB?.label ?? '').toLowerCase())
+              }
+              style={{
+                width: '100%',
+              }}
+              size="large"
+            >
+              {countryList.map((language) => (
+                <Select.Option
+                  key={language.value}
+                  value={language.value}
+                  label={translate(language.label)}
+                >
+                  {language?.icon && language?.icon + ' '}
+                  {translate(language.label)}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+        </Col>
+      </Row>
+      
     </div>
   );
 }

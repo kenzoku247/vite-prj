@@ -56,7 +56,7 @@ const errorHandler = (error) => {
     const { status } = response;
     notification.config({
       duration: 20,
-      maxCount: 2,
+      maxCount: 1,
     });
     notification.error({
       message: `Request error ${status}`,
