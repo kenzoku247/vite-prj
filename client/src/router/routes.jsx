@@ -6,7 +6,7 @@ const Register = lazy(() => import('@/pages/Register'))
 const ActivationUser = lazy(() => import('@/pages/ActivationUser'))
 // const Logout = lazy(() => import('@/pages/Logout.jsx'));
 
-// const Dashboard = lazy(() => import('@/pages/Dashboard'));
+const Dashboard = lazy(() => import('@/pages/Dashboard'));
 // const Customer = lazy(() => import('@/pages/Customer'));
 // const Invoice = lazy(() => import('@/pages/Invoice'));
 // const InvoiceCreate = lazy(() => import('@/pages/Invoice/InvoiceCreate'));
@@ -70,10 +70,10 @@ let routes = {
     //   path: '/about',
     //   element: <About />,
     // },
-    // {
-    //   path: '/',
-    //   element: <Dashboard />,
-    // },
+    {
+      path: '/',
+      element: <Dashboard />,
+    },
     // {
     //   path: '/customer',
     //   element: <Customer />,

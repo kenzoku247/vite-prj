@@ -41,68 +41,80 @@ export default function RegisterForm({ userLocation }) {
           </Form.Item>
         </Col>
       </Row>
-      <Form.Item
-        name="username"
-        label={translate('username')}
-        rules={[
-          {
-            required: true,
-            message: 'Please enter your username!'
-          },
-        ]}
-      >
-        <Input prefix={<UserOutlined className="site-form-item-icon" />} size="large" />
-      </Form.Item>
-      <Form.Item
-        name="email"
-        label={translate('email')}
-        rules={[
-          {
-            required: true,
-          },
-          {
-            type: 'email',
-            message: 'Please enter your email!'
-          },
-        ]}
-      >
-        <Input
-          prefix={<MailOutlined className="site-form-item-icon" />}
-          type="email"
-          size="large"
-        />
-      </Form.Item>
-      <Form.Item
-        name="password"
-        label={translate('password')}
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
-        <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} size="large" />
-      </Form.Item>
-      <Form.Item
-        name="confirm_password"
-        label={translate('confirm_password')}
-        rules={[
-          {
-            required: true,
-          },
-          ({ getFieldValue }) => ({
-            validator(_, value) {
-              if (!value || getFieldValue('password') === value) {
-                return Promise.resolve();
-              }
-              return Promise.reject(new Error('The two passwords that you entered do not match!'));
-            },
-          }),
-        ]}
-        hasFeedback
-      >
-        <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} size="large" />
-      </Form.Item>
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item
+            name="username"
+            label={translate('username')}
+            rules={[
+              {
+                required: true,
+                message: 'Please enter your username!'
+              },
+            ]}
+          >
+            <Input prefix={<UserOutlined className="site-form-item-icon" />} size="large" />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
+            name="email"
+            label={translate('email')}
+            rules={[
+              {
+                required: true,
+              },
+              {
+                type: 'email',
+                message: 'Please enter your email!'
+              },
+            ]}
+          >
+            <Input
+              prefix={<MailOutlined className="site-form-item-icon" />}
+              type="email"
+              size="large"
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item
+            name="password"
+            label={translate('password')}
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} size="large" />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
+            name="confirm_password"
+            label={translate('confirm_password')}
+            rules={[
+              {
+                required: true,
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                },
+              }),
+            ]}
+            hasFeedback
+          >
+            <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} size="large" />
+          </Form.Item>
+        </Col>
+      </Row>
       <Row gutter={16}>
         <Col span={12}>
           <Form.Item

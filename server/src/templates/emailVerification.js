@@ -201,7 +201,7 @@ exports.emailVerification = ({
                         <table border="0" cellpadding="0" cellspacing="0">
                           <tr>
                             <td align="center" bgcolor="#1a82e2" style="border-radius: 6px;">
-                              <a href="${link}" target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">Do Something Sweet</a>
+                              <a href="${link}" target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">Let's PLay</a>
                             </td>
                           </tr>
                         </table>
@@ -477,7 +477,7 @@ exports.passwordVerification = ({
                           <table border="0" cellpadding="0" cellspacing="0">
                             <tr>
                               <td align="center" bgcolor="#1a82e2" style="border-radius: 6px;">
-                                <a href="${link}" target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">Do Something Sweet</a>
+                                <a href="${link}" target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">Back to the fight</a>
                               </td>
                             </tr>
                           </table>

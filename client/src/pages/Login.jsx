@@ -14,6 +14,7 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const onFinish = (values) => {
+        console.log(values)
         dispatch(login({ loginData: values }));
     };
     useEffect(() => {

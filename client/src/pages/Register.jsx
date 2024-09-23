@@ -33,8 +33,10 @@ const RegisterPage = () => {
                     <RegisterForm />
                     <Form.Item>
                         <a className="login-navigate" href="/login" style={{ marginLeft: langDirection === "rtl" ? "220px" : "0px" }}>
-                            {translation('Or already have an account, Login now')}
+                            {translation('Or already have an account. Login now')}
                         </a>
+                    </Form.Item>
+                    <Form.Item>
                         <Button
                             type="primary"
                             htmlType="submit"

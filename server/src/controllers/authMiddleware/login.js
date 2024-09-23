@@ -3,6 +3,7 @@ const authUser = require('./authUser');
 const UserModel = require('@/models/User')
 
 const login = async (req, res, { userModel }) => {
+  console.log(req.body)
   const { username, password } = req.body;
 
   // validate
